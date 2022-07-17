@@ -188,6 +188,15 @@ public class AddressBookMain {
         return stream;
     }
 
+    public void sortedStreamDisplay() {
+        Stream<Collection> sorted_stream = record.stream();
+        sorted_stream.sorted(
+
+                Comparator.comparing(Collection::getFirstName)
+
+        ).forEach(this::display);
+    }
+
     public static void main(String[] args) {
 
         AddressBookMain buildObj=new AddressBookMain();
@@ -213,7 +222,7 @@ public class AddressBookMain {
         //initiating user functions of entries
 
         String user_input="1";
-        while((user_input.equals("1") || user_input.equals("2") || user_input.equals("3") || user_input.equals("4") || user_input.equals("5") || user_input.equals("6") || user_input.equals("7"))) {
+        while((user_input.equals("1") || user_input.equals("2") || user_input.equals("3") || user_input.equals("4") || user_input.equals("5") || user_input.equals("6") || user_input.equals("7") || user_input.equals("8"))) {
 
             // Checking in address list is present in hashmap
             System.out.print("Enter the Name of the Address Book: ");
@@ -238,7 +247,8 @@ public class AddressBookMain {
             System.out.println("5. View by city/state");
             System.out.println("6. Count contacts in City");
             System.out.println("7. Count contacts in State");
-            System.out.println("8. Switch Directory");
+            System.out.println("8. View alphabetical list of Contacts");
+            System.out.println("9. Switch Directory");
             System.out.println("Logout");
             user_input=sc.next();
 
@@ -303,6 +313,10 @@ public class AddressBookMain {
                     break;
                 }
                 case "8": {
+                    buildObj.sortedStreamDisplay();
+                    break;
+                }
+                case "9": {
                     user_input="1";
                     continue;
                 }
@@ -314,6 +328,4 @@ public class AddressBookMain {
         //displaying all entries
         buildObj.display();
     }
-
-
 }

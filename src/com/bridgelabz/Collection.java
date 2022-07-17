@@ -29,13 +29,13 @@ public class Collection {
     public void display() {
 
         System.out.println("------------------------------------------------------");
-        System.out.println("Name: "+firstName+" "+lastName);
-        System.out.println("Address: "+address);
-        System.out.println("City: "+city);
-        System.out.println("State: "+state);
-        System.out.println("Zip: "+zipCode);
-        System.out.println("Phone No.: "+phoneNumber);
-        System.out.println("Email: "+email);
+        System.out.println("Name: " + firstName + " " + lastName);
+        System.out.println("Address: " + address);
+        System.out.println("City: " + city);
+        System.out.println("State: " + state);
+        System.out.println("Zip: " + zipCode);
+        System.out.println("Phone No.: " + phoneNumber);
+        System.out.println("Email: " + email);
         System.out.println("------------------------------------------------------");
         System.out.println();
     }
@@ -43,6 +43,11 @@ public class Collection {
     @Override
     public String toString() {
         System.out.println();
-        return "Created entry for "+firstName+" "+lastName;
+        return "Created entry for " + firstName + " " + lastName;
+    }
+
+
+    public static <U extends Comparable<? super U>, T> U getFirstName(T t) {
+        return null;
     }
 }
