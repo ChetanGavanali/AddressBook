@@ -1,9 +1,15 @@
 package com.bridgelabz;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
 public class AddressBookMain {
+
+    private static final String FILE_NAME = "AddressBookRecord.txt";
 
     static Scanner sc = new Scanner(System.in);
 
@@ -199,6 +205,51 @@ public class AddressBookMain {
         );
     }
 
+    public void writeToFile() {
+
+        StringBuffer strBuffer = new StringBuffer();
+        record.forEach(contacts -> {
+            String contactStr=contacts.pushDataToFile().concat("\n");
+            strBuffer.append(contactStr);
+        });
+
+        try {
+            Files.write(Paths.get(FILE_NAME), strBuffer.toString().getBytes());
+            System.out.println("Write Succeeded!!");
+        }catch(IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public ArrayList<Collection> readFromFile() {
+
+        ArrayList<Collection> fileRecord=new ArrayList<Collection>();
+
+        try {
+            Files.lines(new File(FILE_NAME).toPath())
+                    .map(line->line.trim())
+                    .forEach(line->{
+                        String data = line.toString();
+                        String[] dataArr = data.split(":");
+
+                        String firstName=dataArr[0];			//Getting Entries from data array
+                        String lastName=dataArr[1];
+                        String address=dataArr[2];
+                        String city=dataArr[3];
+                        String state=dataArr[4];
+                        long zipCode=Long.valueOf(dataArr[5],10);
+                        String phoneNo=dataArr[6];
+                        String email=dataArr[7];
+
+                        fileRecord.add(new Collection(firstName, lastName, address, city,
+                                state, zipCode, phoneNo, email));
+                    });
+        }catch(IOException exception) {
+            exception.printStackTrace();
+        }
+        return fileRecord;
+    }
+
     public Stream<Collection> createStreamfromMap(HashMap<String, Collection> map) {
         LinkedList<Collection> contactlist = new LinkedList<Collection>();
         for(Map.Entry mapElement : map.entrySet()) {
@@ -229,7 +280,7 @@ public class AddressBookMain {
         //Creating second entry
         Collection entry2=new Collection("ABCD", "EFGH",
                 "IJKL", "MNOP", "QRST", 123456, "1234567890",
-                "abcd@gmail.com");
+                "abcd@office.com");
         buildObj.addToRecord(entry2,"AddressBook1");				//Adding entry to record
         System.out.println(entry2);
         person_cityMap.put("MNOP",entry2);
@@ -238,7 +289,8 @@ public class AddressBookMain {
         //initiating user functions of entries
 
         String user_input="1";
-        while((user_input.equals("1") || user_input.equals("2") || user_input.equals("3") || user_input.equals("4") || user_input.equals("5") || user_input.equals("6") || user_input.equals("7") || user_input.equals("8"))) {
+        while((user_input.equals("1") || user_input.equals("2") || user_input.equals("3") || user_input.equals("4") || user_input.equals("5")
+                || user_input.equals("6") || user_input.equals("7") || user_input.equals("8") || user_input.equals("9") || user_input.equals("10"))) {
 
             // Checking in address list is present in hashmap
             System.out.print("Enter the Name of the Address Book: ");
@@ -264,7 +316,9 @@ public class AddressBookMain {
             System.out.println("6. Count contacts in City");
             System.out.println("7. Count contacts in State");
             System.out.println("8. View sorted list of Contacts");
-            System.out.println("9. Switch Directory");
+            System.out.println("9. Write data to file");
+            System.out.println("10. Read Data From File and Display");
+            System.out.println("11. Switch Directory");
             System.out.println("Logout");
             user_input=sc.next();
 
@@ -356,6 +410,18 @@ public class AddressBookMain {
                     break;
                 }
                 case "9": {
+                    buildObj.writeToFile();
+                    break;
+                }
+                case "10": {
+                    ArrayList<Collection> fileRecord=buildObj.readFromFile();
+
+                    for (Collection c:fileRecord) {
+                        c.display();
+                    }
+                    break;
+                }
+                case "11": {
                     user_input="1";
                     continue;
                 }

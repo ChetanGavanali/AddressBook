@@ -56,4 +56,8 @@ public class Collection {
     public static <T> long getZipCode(T t) {
         return 0;
     }
+    public String pushDataToFile() {
+        return firstName+":"+lastName+":"+address+":"+city+":"+state
+                +":"+zipCode+":"+phoneNumber+":"+email;
+    }
 }
